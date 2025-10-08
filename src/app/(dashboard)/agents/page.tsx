@@ -3,8 +3,21 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import { AgentsView, AgentsViewLoading } from "@/app/modules/agents/ui/views/agents-view";
 import { Suspense } from "react";
+import { AgentsListHeader } from "@/app/modules/agents/ui/components/agents-list-header";
+
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 const Page = async () => {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+  
+    if (!session ) {
+      redirect('/sign-in');
+    }
+
   const queryClient = getQueryClient();
   void queryClient
     .prefetchQuery(
@@ -14,11 +27,14 @@ const Page = async () => {
       .queryOptions());
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<AgentsViewLoading />}>
-        <AgentsView />
-      </Suspense>
-    </HydrationBoundary>
+    <>
+      <AgentsListHeader />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<AgentsViewLoading />}>
+          <AgentsView />
+        </Suspense>
+      </HydrationBoundary>
+    </>
    );
 }
  

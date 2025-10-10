@@ -40,7 +40,7 @@ export const AgentForm = ({
     trpc.agents.create.mutationOptions({
       onSuccess: () => {
         queryClient.invalidateQueries(
-          trpc.agents.getMany.queryOptions(),       
+          trpc.agents.getMany.queryOptions({}),       
         );
         
         if (initialValues?.id) {
@@ -103,8 +103,8 @@ export const AgentForm = ({
                   {...field}
                   placeholder="e.g John Doe"
                 />
-                <FormMessage />
-              </FormControl>
+                </FormControl>
+              <FormMessage />
             </FormItem>
           )} 
         />
@@ -114,15 +114,15 @@ export const AgentForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Name
+                Instructions
               </FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
                   placeholder="e.g Helpful assistant that can aid in assignments"
                 />
-                <FormMessage />
-              </FormControl>
+                </FormControl>
+              <FormMessage />
             </FormItem>
           )} 
         />

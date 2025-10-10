@@ -24,7 +24,7 @@ const Page = async () => {
       trpc
       .agents
       .getMany
-      .queryOptions());
+      .queryOptions({}));
 
   return (
     <>
